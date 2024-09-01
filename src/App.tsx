@@ -1,26 +1,37 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.scss';
+import VideoData from './VideoData';
+import VideoRow from './VideoRow';
 
-function App() {
+function App(): JSX.Element {
+  const testVideo: VideoData = {
+    "videoId" : "bRIXgb4UgmY",
+    "videoUrl": "https://www.youtube.com/watch?v=bRIXgb4UgmY&list=WL&index=1&pp=gAQBiAQB",
+    "title": "The Endless Universe of \"Bean and Nothingness\"",
+    "channelName": "Patricia Taxxon",
+    "channelUrl": "https://www.youtube.com/@Patricia_Taxxon"
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='container main'>
+
+      <input type='search' placeholder='Search' className='search'/>
+
+      <div className='overflow-auto'>
+
+        <div role='table' className='table'>
+          <div role='row' className='row'>
+            <span role='columnheader' className='cell table-header'>Thumbnail</span>
+            <span role='columnheader' className='cell table-header'>Title</span>
+            <span role='columnheader' className='cell table-header'>Channel</span>
+          </div>
+          <VideoRow video={testVideo}/>
+        </div>
+
+      </div>
+
     </div>
   );
 }
+
 
 export default App;

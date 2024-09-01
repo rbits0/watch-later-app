@@ -1,5 +1,35 @@
 @use "@picocss/pico";
 
-.App {
-  text-align: center;
+.main {
+  padding: 2rem;
+}
+
+.search {
+  width: 50%;
+}
+
+.table-header {
+  font-weight: bold;
+}
+
+.table {
+  @extend table;
+  display: table;
+}
+
+.row {
+  @extend tr;
+  display: table-row;
+}
+
+.cell {
+  @extend td;
+  display: table-cell;
+}
+
+.thumbnail-cell {
+  --pico-color: unset;
+  color: inherit;
+  text-decoration: none;
+  text-decoration-style: none;
 }
