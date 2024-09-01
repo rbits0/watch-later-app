@@ -1,25 +1,93 @@
+import { Suspense, useDeferredValue, useEffect, useState } from 'react';
 import './App.scss';
 import VideoData from './VideoData';
 import VideoRow from './VideoRow';
 
 function App(): JSX.Element {
-  const testVideo: VideoData = {
-    "videoId" : "bRIXgb4UgmY",
-    "videoUrl": "https://www.youtube.com/watch?v=bRIXgb4UgmY&list=WL&index=1&pp=gAQBiAQB",
-    "title": "The Endless Universe of \"Bean and Nothingness\"",
-    "channelName": "Patricia Taxxon",
-    "channelUrl": "https://www.youtube.com/@Patricia_Taxxon"
+  // const testVideo: VideoData = {
+  //   "videoId" : "bRIXgb4UgmY",
+  //   "videoUrl": "https://www.youtube.com/watch?v=bRIXgb4UgmY&list=WL&index=1&pp=gAQBiAQB",
+  //   "title": "The Endless Universe of \"Bean and Nothingness\"",
+  //   "channelName": "Patricia Taxxon",
+  //   "channelUrl": "https://www.youtube.com/@Patricia_Taxxon"
+  // }
+
+  const [videos, setVideos] = useState<VideoData[]>([]);
+  const [search, setSearch] = useState('');
+  const [filteredVideos, setFilteredVideos] = useState<VideoData[]>([]);
+  
+  useEffect(() => {
+    setVideos(getStoredVideos());
+  }, [])
+  
+  useEffect(() => {
+    setFilteredVideos(videos.filter(
+      (video) => videoFilter(video, search.toLowerCase())
+    ));
+  }, [videos, search]);
+  
+  
+
+  function videoFilter(video: VideoData, search: string) {
+    if (search === '') {
+      return true;
+    }
+    
+    if (
+      video.title.toLowerCase().match(
+        search.toLowerCase()
+      )
+    ) {
+      return true;
+    }
+    
+    return false;
   }
+
+
+
+  function addVideos(newVideos: string | VideoData[]) {
+    if (typeof newVideos === 'string') {
+      newVideos = JSON.parse(newVideos);
+    }
+    
+    setVideos((videos) => {
+      const videosCombined = (newVideos as VideoData[]).concat(videos);
+      localStorage.setItem('videos', JSON.stringify(videosCombined));
+      return videosCombined
+    });
+  }
+
+
+  function onImportClick() {
+    const fileInput = document.createElement('input');    
+    fileInput.type = 'file';
+    fileInput.click();
+
+    fileInput.onchange = () => {
+      if (fileInput.files && fileInput.files.length > 0) {
+        fileInput.files[0].text().then((text) => {
+          addVideos(text);
+        })
+      }
+    };
+  }
+  
 
   return (
     <div className='main'>
       <div className='sidebar'>
-        <button>Import file</button>
+        <button onClick={onImportClick}>Import file</button>
       </div>
 
       <div className='main-2'>
 
-        <input type='search' placeholder='Search' className='search'/>
+        <input
+          type='search'
+          placeholder='Search'
+          className='search'
+          onChange={(e) => {setSearch(e.target.value)}}
+        />
 
         <div className='overflow-auto'>
 
@@ -29,35 +97,11 @@ function App(): JSX.Element {
               <span role='columnheader' className='cell table-header'>Title</span>
               <span role='columnheader' className='cell table-header'>Channel</span>
             </div>
-            <VideoRow video={testVideo}/>
-            <VideoRow video={testVideo}/>
-            <VideoRow video={testVideo}/>
-            <VideoRow video={testVideo}/>
-            <VideoRow video={testVideo}/>
-            <VideoRow video={testVideo}/>
-            <VideoRow video={testVideo}/>
-            <VideoRow video={testVideo}/>
-            <VideoRow video={testVideo}/>
-            <VideoRow video={testVideo}/>
-            <VideoRow video={testVideo}/>
-            <VideoRow video={testVideo}/>
-            <VideoRow video={testVideo}/>
-            <VideoRow video={testVideo}/>
-            <VideoRow video={testVideo}/>
-            <VideoRow video={testVideo}/>
-            <VideoRow video={testVideo}/>
-            <VideoRow video={testVideo}/>
-            <VideoRow video={testVideo}/>
-            <VideoRow video={testVideo}/>
-            <VideoRow video={testVideo}/>
-            <VideoRow video={testVideo}/>
-            <VideoRow video={testVideo}/>
-            <VideoRow video={testVideo}/>
-            <VideoRow video={testVideo}/>
-            <VideoRow video={testVideo}/>
-            <VideoRow video={testVideo}/>
-            <VideoRow video={testVideo}/>
-            <VideoRow video={testVideo}/>
+            
+            {filteredVideos.map((video) => (
+                <VideoRow video={video}/>
+              )
+            )}
           </div>
 
         </div>
@@ -65,6 +109,16 @@ function App(): JSX.Element {
       </div>
     </div>
   );
+}
+
+
+function getStoredVideos(): VideoData[] {
+  const videosString = localStorage.getItem('videos');
+  if (!videosString) {
+    return [];
+  } else {
+    return JSON.parse(videosString);
+  }
 }
 
 
