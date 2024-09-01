@@ -12,23 +12,57 @@ function App(): JSX.Element {
   }
 
   return (
-    <div className='container main'>
+    <div className='main'>
+      <div className='sidebar'>
+        <button>Import file</button>
+      </div>
 
-      <input type='search' placeholder='Search' className='search'/>
+      <div className='main-2'>
 
-      <div className='overflow-auto'>
+        <input type='search' placeholder='Search' className='search'/>
 
-        <div role='table' className='table'>
-          <div role='row' className='row'>
-            <span role='columnheader' className='cell table-header'>Thumbnail</span>
-            <span role='columnheader' className='cell table-header'>Title</span>
-            <span role='columnheader' className='cell table-header'>Channel</span>
+        <div className='overflow-auto'>
+
+          <div role='table' className='table'>
+            <div role='row' className='row'>
+              <span role='columnheader' className='cell table-header'>Thumbnail</span>
+              <span role='columnheader' className='cell table-header'>Title</span>
+              <span role='columnheader' className='cell table-header'>Channel</span>
+            </div>
+            <VideoRow video={testVideo}/>
+            <VideoRow video={testVideo}/>
+            <VideoRow video={testVideo}/>
+            <VideoRow video={testVideo}/>
+            <VideoRow video={testVideo}/>
+            <VideoRow video={testVideo}/>
+            <VideoRow video={testVideo}/>
+            <VideoRow video={testVideo}/>
+            <VideoRow video={testVideo}/>
+            <VideoRow video={testVideo}/>
+            <VideoRow video={testVideo}/>
+            <VideoRow video={testVideo}/>
+            <VideoRow video={testVideo}/>
+            <VideoRow video={testVideo}/>
+            <VideoRow video={testVideo}/>
+            <VideoRow video={testVideo}/>
+            <VideoRow video={testVideo}/>
+            <VideoRow video={testVideo}/>
+            <VideoRow video={testVideo}/>
+            <VideoRow video={testVideo}/>
+            <VideoRow video={testVideo}/>
+            <VideoRow video={testVideo}/>
+            <VideoRow video={testVideo}/>
+            <VideoRow video={testVideo}/>
+            <VideoRow video={testVideo}/>
+            <VideoRow video={testVideo}/>
+            <VideoRow video={testVideo}/>
+            <VideoRow video={testVideo}/>
+            <VideoRow video={testVideo}/>
           </div>
-          <VideoRow video={testVideo}/>
+
         </div>
 
       </div>
-
     </div>
   );
 }
