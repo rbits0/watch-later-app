@@ -2,6 +2,7 @@ import { Suspense, useDeferredValue, useEffect, useState } from 'react';
 import './App.scss';
 import VideoData from './VideoData';
 import VideoRow from './VideoRow';
+import { filterVideos } from './search';
 
 let storedVideos: VideoData[];
 
@@ -23,9 +24,7 @@ function App(): JSX.Element {
   const [videos, setVideos] = useState<VideoData[]>(storedVideos);
   const [search, setSearch] = useState('');
 
-  const filteredVideos = videos.filter(
-    (video) => videoFilter(video, search)
-  );
+  const filteredVideos = filterVideos(videos, search);
   
 
   function addVideos(newVideos: string | VideoData[]) {
@@ -101,23 +100,6 @@ function getStoredVideos(): VideoData[] {
   } else {
     return JSON.parse(videosString);
   }
-}
-
-
-function videoFilter(video: VideoData, search: string) {
-  if (search === '') {
-    return true;
-  }
-  
-  if (
-    video.title.toLowerCase().match(
-      search.toLowerCase().trim()
-    )
-  ) {
-    return true;
-  }
-  
-  return false;
 }
 
 
