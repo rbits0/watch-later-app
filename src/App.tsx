@@ -28,16 +28,24 @@ function App(): JSX.Element {
   const filteredVideos = filterVideos(videos, search);
   
 
+  useEffect(() => {
+    saveVideos(videos);
+  }, [videos]);
+  
+
   function addVideos(newVideos: string | VideoData[]) {
     if (typeof newVideos === 'string') {
       newVideos = JSON.parse(newVideos);
     }
     
-    setVideos((videos) => {
-      const videosCombined = (newVideos as VideoData[]).concat(videos);
-      localStorage.setItem('videos', JSON.stringify(videosCombined));
-      return videosCombined;
-    });
+    setVideos((videos) => (
+      (newVideos as VideoData[]).concat(videos)
+    ));
+  }
+  
+  
+  function saveVideos(videos: VideoData[]) {
+    localStorage.setItem('videos', JSON.stringify(videos))
   }
 
 
