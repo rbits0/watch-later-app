@@ -3,6 +3,14 @@ import './App.scss';
 import VideoData from './VideoData';
 import VideoRow from './VideoRow';
 
+let storedVideos: VideoData[];
+
+if (typeof window !== 'undefined') {
+  // Initialise application
+  storedVideos = getStoredVideos();
+}
+
+
 function App(): JSX.Element {
   // const testVideo: VideoData = {
   //   "videoId" : "bRIXgb4UgmY",
@@ -12,20 +20,12 @@ function App(): JSX.Element {
   //   "channelUrl": "https://www.youtube.com/@Patricia_Taxxon"
   // }
 
-  const [videos, setVideos] = useState<VideoData[]>([]);
+  const [videos, setVideos] = useState<VideoData[]>(storedVideos);
   const [search, setSearch] = useState('');
-  const [filteredVideos, setFilteredVideos] = useState<VideoData[]>([]);
-  
-  useEffect(() => {
-    setVideos(getStoredVideos());
-  }, [])
-  
-  useEffect(() => {
-    setFilteredVideos(videos.filter(
-      (video) => videoFilter(video, search.toLowerCase())
-    ));
-  }, [videos, search]);
-  
+
+  const filteredVideos = videos.filter(
+    (video) => videoFilter(video, search.toLowerCase())
+  );
   
 
   function videoFilter(video: VideoData, search: string) {
