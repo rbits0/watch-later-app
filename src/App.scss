@@ -61,3 +61,16 @@ button {
   align-items: center;
   gap: 1rem;
 }
+
+
+
+@media (width < 700px) {
+  .main {
+    flex-direction: column;
+    padding-top: 1rem;
+  }
+  
+  .sidebar {
+    position: relative;
+  }
+}
