@@ -22,6 +22,5 @@ export function filterVideos(videos: readonly VideoData[], search: string) {
   });
 
   const searchResult = fuse.search(search);
-  console.dir(searchResult);
   return searchResult.map(entry => entry.item);
 }
