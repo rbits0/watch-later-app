@@ -28,24 +28,6 @@ function App(): JSX.Element {
   );
   
 
-  function videoFilter(video: VideoData, search: string) {
-    if (search === '') {
-      return true;
-    }
-    
-    if (
-      video.title.toLowerCase().match(
-        search.toLowerCase()
-      )
-    ) {
-      return true;
-    }
-    
-    return false;
-  }
-
-
-
   function addVideos(newVideos: string | VideoData[]) {
     if (typeof newVideos === 'string') {
       newVideos = JSON.parse(newVideos);
@@ -119,6 +101,23 @@ function getStoredVideos(): VideoData[] {
   } else {
     return JSON.parse(videosString);
   }
+}
+
+
+function videoFilter(video: VideoData, search: string) {
+  if (search === '') {
+    return true;
+  }
+  
+  if (
+    video.title.toLowerCase().match(
+      search.toLowerCase()
+    )
+  ) {
+    return true;
+  }
+  
+  return false;
 }
 
 
