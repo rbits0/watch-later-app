@@ -24,7 +24,7 @@ function App(): JSX.Element {
   const [search, setSearch] = useState('');
 
   const filteredVideos = videos.filter(
-    (video) => videoFilter(video, search.toLowerCase())
+    (video) => videoFilter(video, search)
   );
   
 
@@ -111,7 +111,7 @@ function videoFilter(video: VideoData, search: string) {
   
   if (
     video.title.toLowerCase().match(
-      search.toLowerCase()
+      search.toLowerCase().trim()
     )
   ) {
     return true;
