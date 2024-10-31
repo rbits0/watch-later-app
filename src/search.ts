@@ -2,15 +2,15 @@ import Fuse from 'fuse.js';
 import VideoData from './VideoData';
 
 
-export function filterVideos(videos: readonly VideoData[], search: string) {
+export function filterVideos(videos: readonly VideoData[], search: string): readonly VideoData[] {
   if (search === '') {
     return videos;
   }
   
   const fuse = new Fuse(videos, {
     keys: [
-      "title",
-      { name: "channelName", weight: 0.8 },
+      'title',
+      { name: 'channelName', weight: 0.8 },
     ],
     threshold: 0.2,
     ignoreLocation: true,

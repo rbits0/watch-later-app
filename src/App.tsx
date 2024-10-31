@@ -80,9 +80,8 @@ function App(): JSX.Element {
             </div>
             
             {filteredVideos.map((video) => (
-                <VideoRow video={video}/>
-              )
-            )}
+                <VideoRow video={video} key={video.videoId}/>
+            ))}
           </div>
 
         </div>

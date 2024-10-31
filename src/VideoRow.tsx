@@ -1,7 +1,7 @@
 import VideoData from "./VideoData";
 
 interface VideoRowProps {
-  video: VideoData
+  video: VideoData,
 }
 
 function VideoRow({ video }: VideoRowProps): JSX.Element {

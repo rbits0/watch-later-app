@@ -28,17 +28,31 @@
 .table {
   @extend table;
   display: table;
+  table-layout: fixed;
 }
 
 .row {
   @extend tr;
-  display: table-row;
+  display: flex;
 }
 
 .cell {
   @extend td;
   display: table-cell;
 }
+
+.cell:nth-child(1) {
+  flex: 10 1 10rem;
+}
+
+.cell:nth-child(2) {
+  flex: 65 1 20rem;
+}
+
+.cell:nth-child(3) {
+  flex: 25 1 10rem;
+}
+
 
 .thumbnail-cell {
   --pico-color: unset;
@@ -64,7 +78,7 @@ button {
 
 
 
-@media (width < 700px) {
+@media (width < 950px) {
   .main {
     flex-direction: column;
     padding-top: 1rem;
