@@ -9,6 +9,7 @@ let storedVideos: VideoData[];
 if (typeof window !== 'undefined') {
   // Initialise application
   storedVideos = getStoredVideos();
+  deDuplicateVideos(storedVideos);
 }
 
 
@@ -35,7 +36,7 @@ function App(): JSX.Element {
     setVideos((videos) => {
       const videosCombined = (newVideos as VideoData[]).concat(videos);
       localStorage.setItem('videos', JSON.stringify(videosCombined));
-      return videosCombined
+      return videosCombined;
     });
   }
 
@@ -98,6 +99,18 @@ function getStoredVideos(): VideoData[] {
     return [];
   } else {
     return JSON.parse(videosString);
+  }
+}
+
+
+function deDuplicateVideos(videos: VideoData[]) {
+  const seen = new Set();
+  for (const [i, video] of videos.entries()) {
+    if (seen.has(video.videoId)) {
+      videos.splice(i, 1);
+    } else {
+      seen.add(video.videoId);
+    }
   }
 }
 
