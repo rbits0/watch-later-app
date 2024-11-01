@@ -3,6 +3,7 @@ import './App.scss';
 import VideoData from './VideoData';
 import VideoRow from './VideoRow';
 import { filterVideos } from './search';
+import { useModal } from './hooks/UseModal';
 
 let storedVideos: VideoData[];
 
@@ -24,6 +25,9 @@ function App(): JSX.Element {
 
   const [videos, setVideos] = useState<VideoData[]>(storedVideos);
   const [search, setSearch] = useState('');
+  const [isDeleteDialogVisible, setIsDeleteDialogVisible] = useState(false);
+  const [isDeleteOpen, handleDeleteOpen, handleDeleteClose] = useModal();
+  
 
   const filteredVideos = filterVideos(videos, search);
   
@@ -65,36 +69,49 @@ function App(): JSX.Element {
   
 
   return (
-    <div className='main'>
-      <div className='sidebar'>
-        <button onClick={onImportClick}>Import file</button>
-      </div>
+    <div>
+      <dialog open={isDeleteDialogVisible}>
+        <article className='confirm-dialog'>
+          <b>Delete Videos?</b>
+          <div role='group'>
+            <button className='secondary'>Cancel</button>
+            <button className='delete-button'>Delete</button>
+          </div>
+        </article>
+      </dialog>
 
-      <div className='main-2'>
+      <div className='main'>
+        <div className='sidebar'>
+          <button onClick={onImportClick}>Import file</button>
+          <button onClick={() => setIsDeleteDialogVisible(true)}>Delete videos</button>
+        </div>
 
-        <input
-          type='search'
-          placeholder='Search'
-          className='search'
-          onChange={(e) => {setSearch(e.target.value)}}
-        />
+        <div className='main-2'>
 
-        <div className='overflow-auto'>
+          <input
+            type='search'
+            placeholder='Search'
+            className='search'
+            onChange={(e) => {setSearch(e.target.value)}}
+          />
 
-          <div role='table' className='table'>
-            <div role='row' className='row'>
-              <span role='columnheader' className='cell table-header'>Thumbnail</span>
-              <span role='columnheader' className='cell table-header'>Title</span>
-              <span role='columnheader' className='cell table-header'>Channel</span>
+          <div className='overflow-auto'>
+
+            <div role='table' className='table'>
+              <div role='row' className='row'>
+                <span role='columnheader' className='cell table-header'>Thumbnail</span>
+                <span role='columnheader' className='cell table-header'>Title</span>
+                <span role='columnheader' className='cell table-header'>Channel</span>
+              </div>
+              
+              {filteredVideos.map((video) => (
+                  <VideoRow video={video} key={video.videoId}/>
+              ))}
             </div>
-            
-            {filteredVideos.map((video) => (
-                <VideoRow video={video} key={video.videoId}/>
-            ))}
+
           </div>
 
         </div>
-
       </div>
     </div>
   );

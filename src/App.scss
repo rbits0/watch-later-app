@@ -1,4 +1,5 @@
 @use "@picocss/pico";
+@use "@picocss/pico/scss/colors" as *;
 
 .main {
   display: flex;
@@ -68,6 +69,7 @@ button {
 .sidebar {
   flex: 0;
   display: flex;
+  flex-direction: column;
   position: sticky;
   top: 0;
   height: 100vh;
@@ -76,6 +78,31 @@ button {
   gap: 1rem;
 }
 
+.confirm-dialog {
+  text-align: center;
+  font-size: 2rem;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.delete-button {
+  --pico-primary-background: #{$red-550};
+  --pico-primary-border: #{$red-550};
+    
+  --pico-primary-hover-background: #{$red-500};
+  --pico-primary-hover-border: #{$red-500};
+}
+
+[role=group]:has(.delete-button) {
+  --pico-group-box-shadow-focus-with-button:
+    0
+    0
+    0
+    var(--pico-outline-width)
+    rgb(from #{$red-350} r g b / 0.3);
+}
 
 
 @media (width < 950px) {
@@ -85,6 +112,7 @@ button {
   }
   
   .sidebar {
+    flex-direction: row;
     position: relative;
   }
 }
