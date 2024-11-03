@@ -2,6 +2,7 @@
 	import { browser } from '$app/environment';
 	import type { VideoData } from '$lib/VideoData';
   import '../app.scss';
+	import VideoRow from './VideoRow.svelte';
   
   const storedVideos = browser ? localStorage.getItem('videos') : null;
   let videos: VideoData[] = $state(storedVideos ? JSON.parse(storedVideos) : []);
@@ -70,7 +71,9 @@
             <span role='columnheader' class='cell table-header'>Channel</span>
           </div>
           
-          <!-- <VideoRow video={video}/> -->
+          {#each videos as video (video.videoId)}
+            <VideoRow {video}/>
+          {/each}
         </div>
 
       </div>
