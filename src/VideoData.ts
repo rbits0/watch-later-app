@@ -4,7 +4,7 @@ interface VideoData {
   videoUrl: string,
   videoId: string,
   channelUrl: string,
-  thumbnailUrl?: string,
+  thumbnailUrls?: {[key: string]: string},
 }
 
-export default VideoData;
+export type { VideoData }

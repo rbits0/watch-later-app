@@ -1,16 +1,18 @@
-import VideoData from "../VideoData";
+import { VideoData } from "../VideoData";
 
 interface VideoRowProps {
   video: VideoData,
 }
 
 function VideoRow({ video }: VideoRowProps): JSX.Element {
-  const { title, channelName, videoUrl, videoId, channelUrl, thumbnailUrl } = video;
+  const { title, channelName, videoUrl, videoId, channelUrl, thumbnailUrls } = video;
 
   return (
     <div role='row' className='row'>
       <a role='cell' className='cell thumbnail-cell' href={videoUrl}>
-        <img alt='Thumbnail' src={thumbnailUrl}/>
+        <img
+          alt='Thumbnail'
+          src={thumbnailUrls ? thumbnailUrls["default"] : ""}/>
       </a>
       <a role='cell' className='cell' href={videoUrl}>
         {title}

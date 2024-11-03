@@ -1,8 +1,10 @@
 import Fuse from 'fuse.js';
-import VideoData from './VideoData';
+import { VideoData } from './VideoData';
 
 
-export function filterVideos(videos: readonly VideoData[], search: string): readonly VideoData[] {
+export function filterVideos(
+  videos: readonly VideoData[], search: string
+): readonly VideoData[] {
   if (search === '') {
     return videos;
   }
