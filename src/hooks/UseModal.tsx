@@ -4,35 +4,31 @@ import { useCallback, useEffect, useState } from "react";
 
 
 // Returns [modalIsOpen, handleOpen, handleClose]
-function useModal(): [boolean, (event: Event) => void, (event: Event) => void] {
+function useModal(): [boolean, () => void, () => void] {
   const isSSR = typeof window === "undefined";
   const htmlTag = !isSSR && document.querySelector("html");
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const modalAnimationDuration = 400;
+  const modalAnimationDuration = 0;
+
 
   // Handle open
-  const handleOpen = (event: Event) => {
-    if (event) {
-      event.preventDefault();
-    }
-
+  const handleOpen = () => {
     if (htmlTag) {
       setModalIsOpen(true);
       htmlTag.classList.add("modal-is-open", "modal-is-opening");
+
       setTimeout(() => {
         htmlTag.classList.remove("modal-is-opening");
       }, modalAnimationDuration);
     }
   };
 
-  // Handle close
-  const handleClose = useCallback((event: Event) => {
-    if (event) {
-      event.preventDefault();
-    }
 
+  // Handle close
+  const handleClose = useCallback(() => {
     if (htmlTag) {
       htmlTag.classList.add("modal-is-closing");
+
       setTimeout(() => {
         setModalIsOpen(false);
         htmlTag.classList.remove("modal-is-open", "modal-is-closing");
@@ -40,19 +36,24 @@ function useModal(): [boolean, (event: Event) => void, (event: Event) => void] {
     }
   }, [htmlTag]);
 
+
   // Handle escape key
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
       if (!modalIsOpen) return;
       if (event.key === "Escape") {
-        handleClose(event);
+        event.preventDefault();
+        handleClose();
       }
     };
+
     window.addEventListener("keydown", handleEscape);
+
     return () => {
       window.removeEventListener("keydown", handleEscape);
     };
   }, [handleClose, modalIsOpen]);
+
 
   return [modalIsOpen, handleOpen, handleClose];
 };

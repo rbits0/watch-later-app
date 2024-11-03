@@ -4,6 +4,7 @@ import VideoData from './VideoData';
 import VideoRow from './components/VideoRow';
 import { filterVideos } from './search';
 import { useModal } from './hooks/UseModal';
+import DeleteDialog from './components/DeleteDialog';
 
 let storedVideos: VideoData[];
 
@@ -25,7 +26,6 @@ function App(): JSX.Element {
 
   const [videos, setVideos] = useState<VideoData[]>(storedVideos);
   const [search, setSearch] = useState('');
-  const [isDeleteDialogVisible, setIsDeleteDialogVisible] = useState(false);
   const [isDeleteOpen, handleDeleteOpen, handleDeleteClose] = useModal();
   
 
@@ -70,20 +70,16 @@ function App(): JSX.Element {
 
   return (
     <div>
-      <dialog open={isDeleteDialogVisible}>
-        <article className='confirm-dialog'>
-          <b>Delete Videos?</b>
-          <div role='group'>
-            <button className='secondary'>Cancel</button>
-            <button className='delete-button'>Delete</button>
-          </div>
-        </article>
-      </dialog>
+      <DeleteDialog
+        open={isDeleteOpen}
+        onCancel={handleDeleteClose}
+        onConfirm={() => {console.log("Delete")}}
+      />
 
       <div className='main'>
         <div className='sidebar'>
           <button onClick={onImportClick}>Import file</button>
-          <button onClick={() => setIsDeleteDialogVisible(true)}>Delete videos</button>
+          <button onClick={handleDeleteOpen}>Delete videos</button>
         </div>
 
         <div className='main-2'>
