@@ -119,5 +119,6 @@ $delete-button-focus: rgb(from #{$red-350} r g b / 0.3);
   .sidebar {
     flex-direction: row;
     position: relative;
+    flex-wrap: wrap;
   }
 }
