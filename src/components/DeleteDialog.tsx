@@ -1,18 +1,18 @@
 interface DeleteDialogProps {
   open: boolean,
-  onCancel: () => void;
-  onConfirm: () => void;
+  closeCallback: () => void;
+  confirmCallback: () => void;
 }
 
 
-function DeleteDialog({ open, onCancel, onConfirm }: DeleteDialogProps): JSX.Element {
+function DeleteDialog({ open, closeCallback, confirmCallback}: DeleteDialogProps): JSX.Element {
   return (
     <dialog open={open}>
       <article className='confirm-dialog'>
         <b>Delete Videos?</b>
         <div role='group'>
-          <button onClick={onCancel} className='secondary'>Cancel</button>
-          <button onClick={onConfirm} className='delete-button'>Delete</button>
+          <button onClick={closeCallback} className='secondary'>Cancel</button>
+          <button onClick={confirmCallback} className='delete-button'>Delete</button>
         </div>
       </article>
     </dialog>

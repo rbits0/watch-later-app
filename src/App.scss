@@ -87,12 +87,17 @@ button {
   gap: 2rem;
 }
 
+
+$delete-button-focus: rgb(from #{$red-350} r g b / 0.3);
+
 .delete-button {
   --pico-primary-background: #{$red-550};
   --pico-primary-border: #{$red-550};
     
   --pico-primary-hover-background: #{$red-500};
   --pico-primary-hover-border: #{$red-500};
+
+  --pico-primary-focus: #{$delete-button-focus};
 }
 
 [role=group]:has(.delete-button:focus) {
@@ -101,7 +106,7 @@ button {
     0
     0
     var(--pico-outline-width)
-    rgb(from #{$red-350} r g b / 0.3);
+    #{$delete-button-focus};
 }
 
 

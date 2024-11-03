@@ -5,6 +5,7 @@ import VideoRow from './components/VideoRow';
 import { filterVideos } from './search';
 import { useModal } from './hooks/UseModal';
 import DeleteDialog from './components/DeleteDialog';
+import ApiKeyDialog from './components/ApiKeyDialog';
 
 let storedVideos: VideoData[];
 
@@ -27,6 +28,7 @@ function App(): JSX.Element {
   const [videos, setVideos] = useState<VideoData[]>(storedVideos);
   const [search, setSearch] = useState('');
   const [isDeleteOpen, handleDeleteOpen, handleDeleteClose] = useModal();
+  const [isApiKeyOpen, handleApiKeyOpen, handleApiKeyClose] = useModal();
   
 
   const filteredVideos = filterVideos(videos, search);
@@ -78,14 +80,20 @@ function App(): JSX.Element {
     <div>
       <DeleteDialog
         open={isDeleteOpen}
-        onCancel={handleDeleteClose}
-        onConfirm={onDeleteButtonClick}
+        closeCallback={handleDeleteClose}
+        confirmCallback={onDeleteButtonClick}
+      />
+      
+      <ApiKeyDialog
+        open={isApiKeyOpen}
+        closeCallback={handleApiKeyClose}
       />
 
       <div className='main'>
         <div className='sidebar'>
-          <button onClick={onImportClick}>Import file</button>
-          <button onClick={handleDeleteOpen}>Delete videos</button>
+          <button onClick={onImportClick}>Import File</button>
+          <button onClick={handleApiKeyOpen}>Set API Key</button>
+          <button onClick={handleDeleteOpen} className='delete-button'>Delete Videos</button>
         </div>
 
         <div className='main-2'>
