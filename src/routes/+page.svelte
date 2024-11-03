@@ -1,11 +1,14 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
+	import { filterVideos } from '$lib/search';
 	import type { VideoData } from '$lib/VideoData';
   import '../app.scss';
 	import VideoRow from './VideoRow.svelte';
   
   let videos = $state(browser ? loadStoredVideos() : []);
   let search = $state('');
+  let filteredVideos = $derived(filterVideos(videos, search));
+
 
   $effect(() => {
     // Save videos
@@ -90,7 +93,7 @@
             <span role='columnheader' class='cell table-header'>Channel</span>
           </div>
           
-          {#each videos as video (video.videoId)}
+          {#each filteredVideos as video (video.videoId)}
             <VideoRow {video}/>
           {/each}
         </div>
