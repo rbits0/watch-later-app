@@ -95,7 +95,7 @@ button {
   --pico-primary-hover-border: #{$red-500};
 }
 
-[role=group]:has(.delete-button) {
+[role=group]:has(.delete-button:focus) {
   --pico-group-box-shadow-focus-with-button:
     0
     0
