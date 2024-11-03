@@ -68,12 +68,18 @@ function App(): JSX.Element {
   }
   
 
+  function onDeleteButtonClick() {
+    setVideos([]);
+    handleDeleteClose();
+  }
+  
+
   return (
     <div>
       <DeleteDialog
         open={isDeleteOpen}
         onCancel={handleDeleteClose}
-        onConfirm={() => {console.log("Delete")}}
+        onConfirm={onDeleteButtonClick}
       />
 
       <div className='main'>
