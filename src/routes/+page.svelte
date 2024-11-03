@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
+	import DeleteModal from '$lib/DeleteModal.svelte';
 	import { filterVideos } from '$lib/search';
 	import type { VideoData } from '$lib/VideoData';
   import '../app.scss';
@@ -7,6 +8,8 @@
   
   let videos = $state(browser ? loadStoredVideos() : []);
   let search = $state('');
+  let showDeleteModal = $state(false);
+
   let filteredVideos = $derived(filterVideos(videos, search));
 
 
@@ -62,11 +65,22 @@
     videos = videos.concat(newVideos);
     deDuplicateVideos(videos);
   }
+  
+
+  function deleteVideos() {
+    videos = [];
+  }
+
 </script>
+
 
 
 <div>
   <!-- <DeleteDialog/> -->
+  <DeleteModal
+    bind:showModal={showDeleteModal}
+    confirmCallback={deleteVideos}
+  />
   
   <!-- <ApiKeyDialog/> -->
 
@@ -74,7 +88,7 @@
     <div class='sidebar'>
       <button onclick={importFile}>Import File</button>
       <button>Set API Key</button>
-      <button class='delete-button'>Delete Videos</button>
+      <button onclick={() => showDeleteModal = true} class='delete-button'>Delete Videos</button>
     </div>
 
     <div class='main-2'>
@@ -95,7 +109,7 @@
             <span role='columnheader' class='cell table-header'>Channel</span>
           </div>
           
-          {#each filteredVideos as video (video.videoId)}
+          {#each filteredVideos as video}
             <VideoRow {video}/>
           {/each}
         </div>
