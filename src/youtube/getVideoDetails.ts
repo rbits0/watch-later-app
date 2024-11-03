@@ -1,4 +1,4 @@
-import { Thumbnail } from "../VideoData";
+import type { Thumbnail } from "../VideoData";
 
 interface VideoDetails {
   publishedAt: Date,
