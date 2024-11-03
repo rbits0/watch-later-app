@@ -12,7 +12,7 @@ function VideoRow({ video }: VideoRowProps): JSX.Element {
       <a role='cell' className='cell thumbnail-cell' href={videoUrl}>
         <img
           alt='Thumbnail'
-          src={thumbnailUrls ? thumbnailUrls["default"] : ""}/>
+          src={thumbnailUrls ? thumbnailUrls["default"].url : ""}/>
       </a>
       <a role='cell' className='cell' href={videoUrl}>
         {title}
