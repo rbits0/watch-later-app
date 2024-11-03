@@ -29,11 +29,13 @@
   
   function deDuplicateVideos(videos: VideoData[]) {
     const seen = new Set();
-    for (const [i, video] of videos.entries()) {
-      if (seen.has(video.videoId)) {
+    let i = 0;
+    while (i < videos.length) {
+      if (seen.has(videos[i].videoId)) {
         videos.splice(i, 1);
       } else {
-        seen.add(video.videoId);
+        seen.add(videos[i].videoId);
+        i++;
       }
     }
   }
