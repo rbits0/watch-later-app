@@ -1,4 +1,4 @@
-import VideoData from "./VideoData";
+import VideoData from "../VideoData";
 
 interface VideoRowProps {
   video: VideoData,

@@ -1,7 +1,7 @@
 import { Suspense, useDeferredValue, useEffect, useState } from 'react';
 import './App.scss';
 import VideoData from './VideoData';
-import VideoRow from './VideoRow';
+import VideoRow from './components/VideoRow';
 import { filterVideos } from './search';
 import { useModal } from './hooks/UseModal';
 
