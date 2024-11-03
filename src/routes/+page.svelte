@@ -4,8 +4,7 @@
   import '../app.scss';
 	import VideoRow from './VideoRow.svelte';
   
-  const storedVideos = browser ? localStorage.getItem('videos') : null;
-  let videos: VideoData[] = $state(storedVideos ? JSON.parse(storedVideos) : []);
+  let videos = $state(browser ? loadStoredVideos() : []);
   let search = $state('');
 
   $effect(() => {
@@ -17,6 +16,25 @@
     localStorage.setItem('videos', JSON.stringify(videos));    
   })
   
+  
+  function loadStoredVideos(): VideoData[] {
+    const storedVideos = browser ? localStorage.getItem('videos') : null;
+    let videos: VideoData[] = storedVideos ? JSON.parse(storedVideos) : [];
+    deDuplicateVideos(videos);
+    return videos;
+  }
+  
+  function deDuplicateVideos(videos: VideoData[]) {
+    const seen = new Set();
+    for (const [i, video] of videos.entries()) {
+      if (seen.has(video.videoId)) {
+        videos.splice(i, 1);
+      } else {
+        seen.add(video.videoId);
+      }
+    }
+  }
+
 
   function importFile() {
     const fileInput = document.createElement('input');    
@@ -37,6 +55,7 @@
     }
     
     videos = videos.concat(newVideos);
+    deDuplicateVideos(videos);
   }
 </script>
 
