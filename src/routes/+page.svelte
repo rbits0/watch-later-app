@@ -9,7 +9,7 @@
 	import VideoRow from './VideoRow.svelte';
   
   let videos = $state(browser ? loadStoredVideos() : []);
-  let videoDetails = $state(browser ? loadStoredVideoDetails() : []);
+  let videoDetails = $state(browser ? loadStoredVideoDetails() : {});
   let search = $state('');
   let showDeleteModal = $state(false);
   let showApiKeyModal = $state(false);
@@ -40,14 +40,14 @@
     }
   }
   
-  function loadStoredVideoDetails(): VideoDetails[] {
+  function loadStoredVideoDetails(): { [key: string]: VideoDetails } {
     const storedVideoDetails = localStorage.getItem('videoDetails');
     if (storedVideoDetails) {
       return JSON.parse(storedVideoDetails, (key, value) => {
         return key === 'lastFetched' ? new Date(value) : value;
       });
     } else {
-      return [];
+      return {};
     }
   }
   
@@ -106,10 +106,15 @@
       return;
     }
 
-    const unfetchedVideos = videos.filter(video => !(video.lastFetched))
-      .map(video => video.videoId);
+    const unfetchedVideos = videos.filter(
+        video => !(Object.keys(videoDetails).includes(video.videoId))
+      ).map(video => video.videoId);
     const newVideoDetails = await getVideoDetails(unfetchedVideos, apiKey);
-    videoDetails = videoDetails.concat(newVideoDetails);
+
+    // Add new video details to existing video details
+    for (const video of newVideoDetails) {
+      videoDetails[video.id] = video;
+    }
   }
 
 </script>

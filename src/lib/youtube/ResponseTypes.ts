@@ -1,6 +1,7 @@
 import type { Thumbnail } from "$lib/VideoData";
 
 export interface YoutubeVideoResponse {
+  id: string,
   snippet: YoutubeVideoSnippet,
   contentDetails: YoutubeVideoContentDetails,
 }
