@@ -1,4 +1,5 @@
 import type { Thumbnail } from "../VideoData";
+import type { YoutubeVideoResponse } from "./ResponseTypes";
 
 interface VideoDetails {
   publishedAt: Date,
@@ -30,7 +31,7 @@ async function getVideoDetails(videoIds: string[], apiKey: string): Promise<Vide
   const json = await response.json();
   console.dir(json);
   
-  return json.items.map((video: any) => ({
+  return json.items.map((video: YoutubeVideoResponse) => ({
     publishedAt: new Date(video.snippet.publishedAt),
     channelId: video.snippet.channelId,
     title: video.snippet.title,
