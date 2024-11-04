@@ -84,7 +84,6 @@
     confirmCallback={deleteVideos}
   />
   
-  <!-- <ApiKeyDialog/> -->
   <ApiKeyModal bind:showModal={showApiKeyModal} />
 
   <div class='main'>
