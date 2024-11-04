@@ -3,7 +3,7 @@
 
   interface Props {
     video: VideoData,
-    thumbnailUrls: { [key: string]: Thumbnail } | null;
+    thumbnailUrls?: { [key: string]: Thumbnail } | null;
   }
   
   const { video, thumbnailUrls }: Props = $props();
@@ -15,7 +15,7 @@
   <a role='cell' class='cell thumbnail-cell' href={videoUrl}>
     <img
       alt='Thumbnail'
-      src={thumbnailUrls ? thumbnailUrls["default"].url : ""}/>
+      src={thumbnailUrls ? thumbnailUrls['medium'].url : ''}/>
   </a>
   <a role='cell' class='cell' href={videoUrl}>
     {title}

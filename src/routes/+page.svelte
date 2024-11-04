@@ -156,7 +156,13 @@
           </div>
           
           {#each filteredVideos as video (video.videoId)}
-            <VideoRow {video} thumbnailUrls={null}/>
+            <VideoRow
+              {video}
+              thumbnailUrls={
+                Object.keys(videoDetails).includes(video.videoId)
+                ? videoDetails[video.videoId].thumbnails
+                : null
+              }/>
           {/each}
         </div>
 
