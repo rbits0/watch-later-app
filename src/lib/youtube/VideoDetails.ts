@@ -15,7 +15,24 @@ interface VideoDetails {
 }
 
 
+
 async function getVideoDetails(videoIds: string[], apiKey: string): Promise<VideoDetails[]> {
+  const MAX_VIDEOS = 50;
+  let videoDetails: VideoDetails[] = [];
+  
+  // Call getVideoDetailsSingleRequest in batches of size MAX_VIDEOS
+  for (let i = 1; i * MAX_VIDEOS < videoIds.length + MAX_VIDEOS; i++) {
+    const slice = videoIds.slice((i - 1) * MAX_VIDEOS, i * MAX_VIDEOS - 1);
+    videoDetails = videoDetails.concat(
+      await getVideoDetailsSingleRequest(slice, apiKey)
+    );
+  }
+  
+  return videoDetails;
+}
+
+
+async function getVideoDetailsSingleRequest(videoIds: string[], apiKey: string): Promise<VideoDetails[]> {
   // apiKey = localStorage.getItem('apiKey')!;
 
   const url = 'https://youtube.googleapis.com/youtube/v3/videos';
