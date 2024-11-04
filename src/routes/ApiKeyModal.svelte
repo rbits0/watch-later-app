@@ -32,6 +32,7 @@
   <article class='confirm-dialog'>
   
         <form onsubmit={handleSubmit}>
+          <h1>Set API Key</h1>
           <input
             type="text"
             bind:value={apiKey}
