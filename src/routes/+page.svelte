@@ -113,6 +113,7 @@
 
     // Add new video details to existing video details
     for (const video of newVideoDetails) {
+      video.lastFetched = new Date();
       videoDetails[video.id] = video;
     }
   }
