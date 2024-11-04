@@ -22,11 +22,15 @@
     const htmlTag = document.querySelector('html')!;
 
     $effect(() => {
+      // Open
       if (showModal) {
+        // Disable scrolling
         htmlTag.classList.add('modal-is-open');
+
         window.addEventListener('keydown', handleEscape);
       }
       
+      // Close
       return () => {
         htmlTag.classList.remove('modal-is-open');
         window.removeEventListener('keydown', handleEscape);

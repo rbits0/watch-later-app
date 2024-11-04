@@ -4,11 +4,13 @@
 	import { filterVideos } from '$lib/search';
 	import type { VideoData } from '$lib/VideoData';
   import '../app.scss';
+	import ApiKeyModal from './ApiKeyModal.svelte';
 	import VideoRow from './VideoRow.svelte';
   
   let videos = $state(browser ? loadStoredVideos() : []);
   let search = $state('');
   let showDeleteModal = $state(false);
+  let showApiKeyModal = $state(false);
 
   let filteredVideos = $derived(filterVideos(videos, search));
 
@@ -77,18 +79,18 @@
 
 
 <div>
-  <!-- <DeleteDialog/> -->
   <DeleteModal
     bind:showModal={showDeleteModal}
     confirmCallback={deleteVideos}
   />
   
   <!-- <ApiKeyDialog/> -->
+  <ApiKeyModal bind:showModal={showApiKeyModal} />
 
   <div class='main'>
     <div class='sidebar'>
       <button onclick={importFile}>Import File</button>
-      <button>Set API Key</button>
+      <button onclick={() => showApiKeyModal = true}>Set API Key</button>
       <button onclick={() => showDeleteModal = true} class='delete-button'>Delete Videos</button>
     </div>
 
