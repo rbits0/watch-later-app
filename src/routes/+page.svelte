@@ -15,6 +15,7 @@
   let showApiKeyModal = $state(false);
 
   let filteredVideos = $derived(filterVideos(videos, search, videoDetails));
+  $inspect(filteredVideos);
 
 
   if (browser) {
@@ -156,15 +157,17 @@
             <span role='columnheader' class='cell table-header'>Channel</span>
           </div>
           
-          {#each filteredVideos as video (video.videoId)}
-            <VideoRow
-              {video}
-              thumbnailUrls={
-                Object.keys(videoDetails).includes(video.videoId)
-                ? videoDetails[video.videoId].thumbnails
-                : null
-              }/>
-          {/each}
+          {#await filteredVideos then filteredVideos}
+            {#each filteredVideos as video (video.videoId)}
+              <VideoRow
+                {video}
+                thumbnailUrls={
+                  Object.keys(videoDetails).includes(video.videoId)
+                  ? videoDetails[video.videoId].thumbnails
+                  : null
+                }/>
+            {/each}
+          {/await}
         </div>
 
       </div>

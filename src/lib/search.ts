@@ -3,11 +3,11 @@ import type { VideoData } from './VideoData';
 import type { VideoDetails } from './youtube/VideoDetails';
 
 
-export function filterVideos(
+export async function filterVideos(
   videos: readonly VideoData[],
   search: string,
   videoDetails: { [key: string]: VideoDetails }
-): readonly VideoData[] {
+): Promise<readonly VideoData[]> {
   if (search === '') {
     return videos;
   }
