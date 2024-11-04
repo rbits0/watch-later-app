@@ -43,13 +43,11 @@
         // Close
 
         dialog?.close();
-        // dialog?.addEventListener('animationend', handleAnimationEnd, { once: true });
       }
       
       return () => {
         htmlTag.classList.remove('modal-is-open');
         window.removeEventListener('keydown', handleEscape);
-        // dialog?.removeEventListener('animationend', handleAnimationEnd);
       }
     });    
   }
@@ -59,8 +57,6 @@
 <dialog
   bind:this={dialog}
   class='modal'
-  class:open-animation={showModal}
-  class:close-animation={!showModal}
 >
   {@render children()}
 </dialog>
@@ -91,4 +87,14 @@
       background-color: transparent;
     }
   }
+  
+  :global(dialog.modal > article) {
+    transition: transform #{$modal-duration} ease-out 0s;
+    
+  }
+  
+  :global(dialog.modal:not([open]) > article) {
+    transform: translateY(100%);
+  }
+  
 </style>
