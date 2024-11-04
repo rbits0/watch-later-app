@@ -42,13 +42,14 @@
       } else {
         // Close
 
-        dialog?.addEventListener('animationend', handleAnimationEnd, { once: true });
+        dialog?.close();
+        // dialog?.addEventListener('animationend', handleAnimationEnd, { once: true });
       }
       
       return () => {
         htmlTag.classList.remove('modal-is-open');
         window.removeEventListener('keydown', handleEscape);
-        dialog?.removeEventListener('animationend', handleAnimationEnd);
+        // dialog?.removeEventListener('animationend', handleAnimationEnd);
       }
     });    
   }
@@ -57,6 +58,7 @@
 
 <dialog
   bind:this={dialog}
+  class='modal'
   class:open-animation={showModal}
   class:close-animation={!showModal}
 >
@@ -66,36 +68,27 @@
 
 
 <style lang="scss">
-  dialog.open-animation {
-    animation: 0.2s ease-out fade;
+  $modal-duration: 0.2s;
+
+  dialog, dialog:not([open]) {
+    display: flex;
+    inset: 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: 
+      opacity #{$modal-duration} ease-out 0s,
+      visibility #{$modal-duration} ease-out 0s;
   }
-  
-  dialog.close-animation {
-    animation: 0.2s ease-out fade-out;
+
+  dialog[open] {
+    visibility: visible;
+    opacity: 1;
   }
   
   @keyframes fade {
-    from {
-      // backdrop-filter: none;
-      // background-color: transparent;
-      opacity: 0%;
-    }
-    
     to {
-      opacity: 100%;
-    }
-  }
-
-  @keyframes fade-out {
-    from {
-      // backdrop-filter: none;
-      // background-color: transparent;
-      opacity: 1;
-    }
-    
-    to {
-      // background-color: red;
-      opacity: 0;
+      backdrop-filter: none;
+      background-color: transparent;
     }
   }
 </style>
