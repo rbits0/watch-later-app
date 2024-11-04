@@ -10,6 +10,7 @@ interface VideoDetails {
   thumbnails: { [key: string]: Thumbnail },
   tags: string[],
   duration: string,
+  lastFetched?: Date,
 }
 
 
@@ -45,3 +46,4 @@ async function getVideoDetails(videoIds: string[], apiKey: string): Promise<Vide
 
 
 export { getVideoDetails };
+export type { VideoDetails };

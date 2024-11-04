@@ -3,11 +3,13 @@
 	import DeleteModal from '$lib/DeleteModal.svelte';
 	import { filterVideos } from '$lib/search';
 	import type { VideoData } from '$lib/VideoData';
+	import { getVideoDetails, type VideoDetails } from '$lib/youtube/VideoDetails';
   import '../app.scss';
 	import ApiKeyModal from './ApiKeyModal.svelte';
 	import VideoRow from './VideoRow.svelte';
   
   let videos = $state(browser ? loadStoredVideos() : []);
+  let videoDetails = $state(browser ? loadStoredVideoDetails() : []);
   let search = $state('');
   let showDeleteModal = $state(false);
   let showApiKeyModal = $state(false);
@@ -15,21 +17,38 @@
   let filteredVideos = $derived(filterVideos(videos, search));
 
 
-  $effect(() => {
-    // Save videos
-    if (!browser) {
-      return;
-    }
-
-    localStorage.setItem('videos', JSON.stringify(videos));    
-  })
+  if (browser) {
+    $effect(() => {
+      // Save videos
+      localStorage.setItem('videos', JSON.stringify(videos));
+    })
+    
+    $effect(() => {
+      localStorage.setItem('videoDetails', JSON.stringify(videoDetails));
+    })
+  }
   
   
   function loadStoredVideos(): VideoData[] {
-    const storedVideos = browser ? localStorage.getItem('videos') : null;
-    let videos: VideoData[] = storedVideos ? JSON.parse(storedVideos) : [];
-    deDuplicateVideos(videos);
-    return videos;
+    const storedVideos = localStorage.getItem('videos');
+    if (storedVideos) {
+      let videos: VideoData[] = JSON.parse(storedVideos);
+      deDuplicateVideos(videos);
+      return videos;
+    } else {
+      return [];
+    }
+  }
+  
+  function loadStoredVideoDetails(): VideoDetails[] {
+    const storedVideoDetails = localStorage.getItem('videoDetails');
+    if (storedVideoDetails) {
+      return JSON.parse(storedVideoDetails, (key, value) => {
+        return key === 'lastFetched' ? new Date(value) : value;
+      });
+    } else {
+      return [];
+    }
   }
   
   function deDuplicateVideos(videos: VideoData[]) {
@@ -73,6 +92,25 @@
   function deleteVideos() {
     videos = [];
   }
+  
+
+  // Gets details for all new videos (videos that haven't been fetched before)
+  async function getNewVideoDetails() {
+    if (!browser) {
+      return;
+    }
+
+    const apiKey = localStorage.getItem('apiKey');
+    if (!apiKey) {
+      console.log('API key not set. Unable to fetch video details');
+      return;
+    }
+
+    const unfetchedVideos = videos.filter(video => !(video.lastFetched))
+      .map(video => video.videoId);
+    const newVideoDetails = await getVideoDetails(unfetchedVideos, apiKey);
+    videoDetails = videoDetails.concat(newVideoDetails);
+  }
 
 </script>
 
@@ -91,6 +129,7 @@
       <button onclick={importFile}>Import File</button>
       <button onclick={() => showApiKeyModal = true}>Set API Key</button>
       <button onclick={() => showDeleteModal = true} class='delete-button'>Delete Videos</button>
+      <button onclick={getNewVideoDetails}>Get Video Details</button>
     </div>
 
     <div class='main-2'>
@@ -112,7 +151,7 @@
           </div>
           
           {#each filteredVideos as video (video.videoId)}
-            <VideoRow {video}/>
+            <VideoRow {video} thumbnailUrls={null}/>
           {/each}
         </div>
 

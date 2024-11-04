@@ -1,12 +1,13 @@
 <script lang="ts">
-	import type { VideoData } from "$lib/VideoData";
+	import type { Thumbnail, VideoData } from "$lib/VideoData";
 
   interface Props {
     video: VideoData,
+    thumbnailUrls: { [key: string]: Thumbnail } | null;
   }
   
-  const { video }: Props = $props();
-  const { title, channelName, videoUrl, channelUrl, thumbnailUrls } = video;
+  const { video, thumbnailUrls }: Props = $props();
+  const { title, channelName, videoUrl, channelUrl } = video;
 </script>
 
 

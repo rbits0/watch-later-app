@@ -4,7 +4,6 @@ interface VideoData {
   videoUrl: string,
   videoId: string,
   channelUrl: string,
-  thumbnailUrls?: { [key: string]: Thumbnail },
 }
 
 interface Thumbnail {
