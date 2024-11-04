@@ -35,6 +35,7 @@
     let i = 0;
     while (i < videos.length) {
       if (seen.has(videos[i].videoId)) {
+        console.log(`Video ${videos[i].videoId} already exists`);
         videos.splice(i, 1);
       } else {
         seen.add(videos[i].videoId);
@@ -109,7 +110,7 @@
             <span role='columnheader' class='cell table-header'>Channel</span>
           </div>
           
-          {#each filteredVideos as video}
+          {#each filteredVideos as video (video.videoId)}
             <VideoRow {video}/>
           {/each}
         </div>
