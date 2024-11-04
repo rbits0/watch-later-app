@@ -14,7 +14,7 @@
   let showDeleteModal = $state(false);
   let showApiKeyModal = $state(false);
 
-  let filteredVideos = $derived(filterVideos(videos, search));
+  let filteredVideos = $derived(filterVideos(videos, search, videoDetails));
 
 
   if (browser) {

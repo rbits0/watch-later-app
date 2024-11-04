@@ -1,18 +1,38 @@
 import Fuse from 'fuse.js';
 import type { VideoData } from './VideoData';
+import type { VideoDetails } from './youtube/VideoDetails';
 
 
 export function filterVideos(
-  videos: readonly VideoData[], search: string
+  videos: readonly VideoData[],
+  search: string,
+  videoDetails: { [key: string]: VideoDetails }
 ): readonly VideoData[] {
   if (search === '') {
     return videos;
   }
   
+
+  function getFn(obj: VideoData, path: string | string[]): string {
+    // console.log(`id: ${obj.videoId}\n path: "${path}"`);
+
+    if (path[0] === 'description') {
+      if (Object.keys(videoDetails).includes(obj.videoId)) {
+        return ` ${videoDetails[obj.videoId].description} `;
+      } else {
+        return '';
+      }
+    }
+
+    return ` ${obj[path as keyof VideoData] as string} `;
+  }
+    
+
   const fuse = new Fuse(videos, {
     keys: [
-      'title',
-      { name: 'channelName', weight: 0.8 },
+      { name: 'title', weight: 1.2 },
+      { name: 'channelName', weight: 1.0 },
+      { name: 'description', weight: 1.0 },
     ],
     threshold: 0.2,
     ignoreLocation: true,
@@ -20,9 +40,10 @@ export function filterVideos(
     includeScore: true,
     includeMatches: true,
     // Don't prioritise exact matches over matches with text surrounding it
-    getFn: (obj, path) => ` ${obj[path as keyof VideoData] as string} `,
+    getFn,
   });
 
   const searchResult = fuse.search(search);
   return searchResult.map(entry => entry.item);
 }
+
