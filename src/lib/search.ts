@@ -14,8 +14,6 @@ export function filterVideos(
   
 
   function getFn(obj: VideoData, path: string | string[]): string {
-    // console.log(`id: ${obj.videoId}\n path: "${path}"`);
-
     if (path[0] === 'description') {
       if (Object.keys(videoDetails).includes(obj.videoId)) {
         return ` ${videoDetails[obj.videoId].description} `;

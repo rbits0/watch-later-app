@@ -37,13 +37,11 @@
   })
 
   async function initSearchWorker() {
-    console.log('window.Worker');
     const searchWorker = new Worker(new URL('$lib/searchWorker.ts', import.meta.url), {
       type: 'module'
     });
 
     searchWorker.onmessage = (event: MessageEvent) => {
-      console.log('return message');
       filteredVideos = event.data;
     };
     
@@ -120,7 +118,7 @@
       newVideos = JSON.parse(newVideos) as VideoData[];
     }
     
-    videos = videos.concat(newVideos);
+    videos = newVideos.concat(videos);
     deDuplicateVideos(videos);
   }
   
