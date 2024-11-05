@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
 	import DeleteModal from '$lib/DeleteModal.svelte';
-	import { filterVideos } from '$lib/search';
+	// import { filterVideos } from '$lib/search';
 	import type { VideoData } from '$lib/VideoData';
 	import { getVideoDetails, type VideoDetails } from '$lib/youtube/VideoDetails';
+	import { onMount } from 'svelte';
   import '../app.scss';
 	import ApiKeyModal from './ApiKeyModal.svelte';
 	import VideoRow from './VideoRow.svelte';
@@ -14,8 +15,8 @@
   let showDeleteModal = $state(false);
   let showApiKeyModal = $state(false);
 
-  let filteredVideos = $derived(filterVideos(videos, search, videoDetails));
-  $inspect(filteredVideos);
+  let filteredVideos: readonly VideoData[] = $state([]);
+  // let filteredVideos = $derived(filterVideosAsync(videos, videoDetails, search));
 
 
   if (browser) {
@@ -29,7 +30,36 @@
     })
   }
   
+
+  onMount(() => {
+    if (browser && window.Worker) {
+      initSearchWorker();
+    }
+  })
+
+  async function initSearchWorker() {
+    console.log('window.Worker');
+    const searchWorker = new Worker(new URL('$lib/searchWorker.ts', import.meta.url), {
+      type: 'module'
+    });
+
+    searchWorker.onmessage = (event: MessageEvent) => {
+      console.log('return message');
+      filteredVideos = event.data;
+    };
+
+    $effect(() => {
+      console.log('effect');
+
+      searchWorker.postMessage([
+        $state.snapshot(videos),
+        $state.snapshot(videoDetails),
+        $state.snapshot(search),
+      ]);
+    })
+  }
   
+
   function loadStoredVideos(): VideoData[] {
     const storedVideos = localStorage.getItem('videos');
     if (storedVideos) {
@@ -118,6 +148,12 @@
       videoDetails[video.id] = video;
     }
   }
+  
+
+  // async function onSearchInput(event: { currentTarget: HTMLInputElement }) {
+  //   const x = await filterVideos(videos, event.currentTarget.value, videoDetails);
+  //   filteredVideos = x;
+  // }
 
 </script>
 
@@ -137,6 +173,7 @@
       <button onclick={() => showApiKeyModal = true}>Set API Key</button>
       <button onclick={() => showDeleteModal = true} class='delete-button'>Delete Videos</button>
       <button onclick={getNewVideoDetails}>Get Video Details</button>
+      <!-- <button onclick={test}>Test</button> -->
     </div>
 
     <div class='main-2'>
