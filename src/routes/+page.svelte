@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
+  import lodash from "lodash";
 	import DeleteModal from '$lib/DeleteModal.svelte';
-	// import { filterVideos } from '$lib/search';
 	import type { VideoData } from '$lib/VideoData';
 	import { getVideoDetails, type VideoDetails } from '$lib/youtube/VideoDetails';
 	import { onMount } from 'svelte';
@@ -9,14 +9,13 @@
 	import ApiKeyModal from './ApiKeyModal.svelte';
 	import VideoRow from './VideoRow.svelte';
   
-  let videos = $state(browser ? loadStoredVideos() : []);
+  const storedVideos = browser ? loadStoredVideos() : [] 
+  let videos = $state(storedVideos);
+  let filteredVideos: readonly VideoData[] = $state(storedVideos);
   let videoDetails = $state(browser ? loadStoredVideoDetails() : {});
   let search = $state('');
   let showDeleteModal = $state(false);
   let showApiKeyModal = $state(false);
-
-  let filteredVideos: readonly VideoData[] = $state([]);
-  // let filteredVideos = $derived(filterVideosAsync(videos, videoDetails, search));
 
 
   if (browser) {
@@ -47,15 +46,21 @@
       console.log('return message');
       filteredVideos = event.data;
     };
-
-    $effect(() => {
-      console.log('effect');
-
+    
+    const searchDebounced = lodash.debounce((
+      videos: VideoData[],
+      videoDetails: { [key: string]: VideoDetails },
+      search: string,
+    ) => {
       searchWorker.postMessage([
         $state.snapshot(videos),
         $state.snapshot(videoDetails),
         $state.snapshot(search),
       ]);
+    }, 300);
+
+    $effect(() => {
+      searchDebounced(videos, videoDetails, search);
     })
   }
   
