@@ -1,5 +1,5 @@
-import type { Thumbnail } from "../VideoData";
-import type { YoutubeVideoResponse } from "./ResponseTypes";
+import type { Thumbnail } from "$lib/VideoData";
+import type { YoutubeVideoResponse } from "$lib/youtube/ResponseTypes";
 
 interface VideoDetails {
   id: string,

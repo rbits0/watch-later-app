@@ -1,6 +1,6 @@
 import Fuse from 'fuse.js';
-import type { VideoData } from './VideoData';
-import type { VideoDetails } from './youtube/VideoDetails';
+import type { VideoData } from '$lib/VideoData';
+import type { VideoDetails } from '$lib/youtube/VideoDetails';
 
 
 export function filterVideos(

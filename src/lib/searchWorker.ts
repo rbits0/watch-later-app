@@ -1,6 +1,6 @@
-import { filterVideos } from "./search";
-import type { VideoData } from "./VideoData";
-import type { VideoDetails } from "./youtube/VideoDetails";
+import { filterVideos } from "$lib/search";
+import type { VideoData } from "$lib/VideoData";
+import type { VideoDetails } from "$lib/youtube/VideoDetails";
 
 
 self.onmessage = (event: MessageEvent) => {

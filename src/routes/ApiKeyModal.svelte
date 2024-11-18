@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { browser } from "$app/environment";
-  import Modal from "$lib/Modal.svelte";
+  import Modal from "../lib/components/Modal.svelte";
   
   interface Props {
     showModal: boolean,

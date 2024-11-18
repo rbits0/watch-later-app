@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { browser } from "$app/environment";
-	import { disableScrollHandling } from "$app/navigation";
 	import type { Snippet } from "svelte";
 
   interface Props {

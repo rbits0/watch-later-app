@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
   import lodash from "lodash";
-	import DeleteModal from '$lib/DeleteModal.svelte';
+	import DeleteModal from '$lib/components/DeleteModal.svelte';
 	import type { VideoData } from '$lib/VideoData';
 	import { getVideoDetails, type VideoDetails } from '$lib/youtube/VideoDetails';
 	import { onMount } from 'svelte';
