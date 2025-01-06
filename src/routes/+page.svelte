@@ -8,10 +8,12 @@
   import '../app.scss';
 	import ApiKeyModal from './ApiKeyModal.svelte';
 	import VideoRow from './VideoRow.svelte';
+	import { filterVideos } from '$lib/search';
+	import { shuffleArray } from '$lib/shuffle';
   
   const storedVideos = browser ? loadStoredVideos() : [] 
   let videos = $state(storedVideos);
-  let filteredVideos: readonly VideoData[] = $state(storedVideos);
+  let filteredVideos: VideoData[] = $state(storedVideos);
   let videoDetails = $state(browser ? loadStoredVideoDetails() : {});
   let search = $state('');
   let showDeleteModal = $state(false);
@@ -151,6 +153,11 @@
       videoDetails[video.id] = video;
     }
   }
+
+
+  function shuffleVideos() {
+    shuffleArray(filteredVideos);
+  }
   
 
   // async function onSearchInput(event: { currentTarget: HTMLInputElement }) {
@@ -176,6 +183,7 @@
       <button onclick={() => showApiKeyModal = true}>Set API Key</button>
       <button onclick={() => showDeleteModal = true} class='delete-button'>Delete Videos</button>
       <button onclick={getNewVideoDetails}>Get Video Details</button>
+      <button onclick={shuffleVideos}>Shuffle Videos</button>
       <!-- <button onclick={test}>Test</button> -->
     </div>
 
