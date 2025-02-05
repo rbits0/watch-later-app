@@ -87,6 +87,14 @@ button {
   gap: 2rem;
 }
 
+footer {
+  display: flex;
+  justify-content: center;
+  padding: 0.5rem;
+  font-size: 0.75rem;
+  gap: 1rem;
+}
+
 
 $delete-button-focus: rgb(from #{$red-350} r g b / 0.3);
 

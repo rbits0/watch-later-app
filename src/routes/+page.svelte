@@ -223,3 +223,8 @@
     </div>
   </div>
 </div>
+
+<footer>
+  <p>Made by <a href="https://github.com/rbits0">rbits0</a></p>
+  <a href="https://github.com/rbits0/watch-later-app">Source code</a>
+</footer>
